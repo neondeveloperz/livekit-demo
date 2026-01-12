@@ -245,7 +245,7 @@ class SenseVoiceSTT(stt.STT):
         audio_np = np.frombuffer(raw_bytes, dtype=np.int16).astype(np.float32) / 32768.0
 
         try:
-            res = self._model.generate([audio_np], language=language if language else "auto", use_itn=False)
+            res = self._model.generate([audio_np], language=language if language else "th", use_itn=False)
             if res and len(res) > 0 and 'text' in res[0]:
                 text = res[0]['text']
                 return stt.SpeechEvent(
