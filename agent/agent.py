@@ -69,7 +69,7 @@ async def entrypoint(ctx: JobContext):
         vad=silero.VAD.load(),
         stt=SenseVoiceSTT(),
         llm=openai.LLM(
-            model="llama3.2",
+            model="qwen2.5:7b",
             base_url="http://localhost:11434/v1",
             api_key="ollama", # Dummy key required by OpenAI client
         ),
