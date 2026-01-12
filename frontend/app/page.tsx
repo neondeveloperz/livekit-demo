@@ -1,4 +1,5 @@
 import LiveKitComponent from "@/components/LiveKitRoom";
+import RoomList from "@/components/RoomList";
 
 // ใน Next.js App Router เราสามารถรับ searchParams ได้ใน Props
 export default async function MeetingPage({
@@ -7,13 +8,18 @@ export default async function MeetingPage({
   searchParams: Promise<{ room?: string; user?: string }>;
 }) {
   const { room, user } = await searchParams;
-  const roomName = room || "default-room";
-  const username = user || `user-${Math.floor(Math.random() * 1000)}`;
+  if (!room && !user) {
+    return <RoomList />;
+  }
+
+  const finalRoomName = room || 'default-room';
+  const finalUsername = user || `user-${Math.floor(Math.random() * 1000)}`;
 
   return (
     <main>
-      {/* เรียกใช้ Client Component */}
-      <LiveKitComponent roomName={roomName} username={username} />
+      <LiveKitComponent roomName={finalRoomName} username={finalUsername} />
     </main>
   );
 }
+
+// Add import at the top (this tool call handles the function body, I'll add import in next step if needed or assume it handles it)
