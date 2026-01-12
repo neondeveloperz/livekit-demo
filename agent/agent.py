@@ -50,10 +50,10 @@ async def entrypoint(ctx: JobContext):
     # 2. เตรียม TTS Adapter
     # หมายเหตุ: CosyVoice ใช้ 22050Hz แต่อาจจะต้องเช็คว่า LiveKit รองรับไหม
     # ถ้า Model โหลดผ่าน Error เรื่อง Audio Frame จะหายไปเอง
-    tts_adapter = tts.StreamAdapter(
-        tts=CosyVoiceTTS(),
-        sentence_tokenizer=tokenize.basic.SentenceTokenizer()
-    )
+    # tts_adapter = tts.StreamAdapter(
+    #     tts=CosyVoiceTTS(),
+    #     sentence_tokenizer=tokenize.basic.SentenceTokenizer()
+    # )
 
     # 3. สร้าง Agent
     initial_ctx = ChatContext(
@@ -69,9 +69,9 @@ async def entrypoint(ctx: JobContext):
         vad=silero.VAD.load(),
         stt=SenseVoiceSTT(),
         llm=google.LLM(
-            model="gemini-1.5-flash",
+            model="gemini-1.5-flash-001",
         ),
-        tts=tts_adapter,
+        tts=google.TTS(language="th-TH"),
         chat_ctx=initial_ctx,
         instructions="คุณคือผู้ช่วย AI อารมณ์ดี ชื่อจาวิส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง",
     )
