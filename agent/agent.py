@@ -33,9 +33,9 @@ from livekit import rtc
 from livekit.agents import JobContext, WorkerOptions, cli, tokenize, tts, AutoSubscribe
 from livekit.agents.llm import ChatContext, ChatMessage
 from livekit.agents.voice import Agent, AgentSession
-from livekit.plugins import silero
+from livekit.plugins import silero, openai
 from fun_audio import SenseVoiceSTT, CosyVoiceTTS # import หลัง patch แล้ว
-from mock_llm import MockLLM
+# from mock_llm import MockLLM
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("agent")
@@ -68,7 +68,11 @@ async def entrypoint(ctx: JobContext):
     agent = Agent(
         vad=silero.VAD.load(),
         stt=SenseVoiceSTT(),
-        llm=MockLLM(),
+        llm=openai.LLM(
+            model="llama3.2",
+            base_url="http://localhost:11434/v1",
+            api_key="ollama", # Dummy key required by OpenAI client
+        ),
         tts=tts_adapter,
         chat_ctx=initial_ctx,
         instructions="คุณคือผู้ช่วย AI อารมณ์ดี ชื่อจาวิส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง",
