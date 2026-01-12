@@ -34,8 +34,8 @@ from livekit.agents import JobContext, WorkerOptions, cli, tokenize, tts, AutoSu
 from livekit.agents.llm import ChatContext, ChatMessage
 from livekit.agents.voice import Agent, AgentSession
 from livekit.plugins import silero, google
-from fun_audio import SenseVoiceSTT, CosyVoiceTTS # import หลัง patch แล้ว
-# from mock_llm import MockLLM
+from fun_audio import SenseVoiceSTT, CosyVoiceTTS
+from edge_tts_plugin import EdgeTTS # Custom adapter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("agent")
@@ -71,7 +71,7 @@ async def entrypoint(ctx: JobContext):
         llm=google.LLM(
             model="gemini-1.5-flash-001",
         ),
-        tts=google.TTS(language="th-TH"),
+        tts=EdgeTTS(voice="th-TH-PremwadeeNeural"),
         chat_ctx=initial_ctx,
         instructions="คุณคือผู้ช่วย AI อารมณ์ดี ชื่อจาวิส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง",
     )
