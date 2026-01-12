@@ -33,7 +33,7 @@ from livekit import rtc
 from livekit.agents import JobContext, WorkerOptions, cli, tokenize, tts, AutoSubscribe
 from livekit.agents.llm import ChatContext, ChatMessage
 from livekit.agents.voice import Agent, AgentSession
-from livekit.plugins import silero, google
+from livekit.plugins import silero, openai
 from fun_audio import SenseVoiceSTT, CosyVoiceTTS
 from edge_tts_plugin import EdgeTTS # Custom adapter
 
@@ -60,7 +60,7 @@ async def entrypoint(ctx: JobContext):
         items=[
             ChatMessage(
                 role="system",
-                content=["คุณคือผู้ช่วย AI อารมณ์ดี ชื่อจาวิส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง"]
+                content=["คุณคือCall center AI อารมณ์ดี ชื่อฟ้าใส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง ขายของเก่งมาก"]
             )
         ]
     )
@@ -68,12 +68,15 @@ async def entrypoint(ctx: JobContext):
     agent = Agent(
         vad=silero.VAD.load(),
         stt=SenseVoiceSTT(),
-        llm=google.LLM(
-            model="gemini-1.5-flash-001",
+        llm=openai.LLM( 
+            # model="llama3.2",
+            model="qwen2.5:7b",
+            base_url="http://localhost:11434/v1",
+            api_key="ollama", # Dummy key required by OpenAI client
         ),
         tts=EdgeTTS(voice="th-TH-PremwadeeNeural"),
         chat_ctx=initial_ctx,
-        instructions="คุณคือผู้ช่วย AI อารมณ์ดี ชื่อจาวิส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง",
+        instructions="คุณคือCall center AI อารมณ์ดี ชื่อฟ้าใส พูดภาษาไทยเป็นหลัก สั้นกระชับและเป็นกันเอง ขายของเก่งมาก",
     )
 
     # 4. เริ่มทำงาน
