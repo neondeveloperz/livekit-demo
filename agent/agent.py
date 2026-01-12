@@ -33,7 +33,7 @@ from livekit import rtc
 from livekit.agents import JobContext, WorkerOptions, cli, tokenize, tts, AutoSubscribe
 from livekit.agents.llm import ChatContext, ChatMessage
 from livekit.agents.voice import Agent, AgentSession
-from livekit.plugins import silero, openai
+from livekit.plugins import silero, google
 from fun_audio import SenseVoiceSTT, CosyVoiceTTS # import หลัง patch แล้ว
 # from mock_llm import MockLLM
 
@@ -68,10 +68,8 @@ async def entrypoint(ctx: JobContext):
     agent = Agent(
         vad=silero.VAD.load(),
         stt=SenseVoiceSTT(),
-        llm=openai.LLM(
-            model="qwen2.5:7b",
-            base_url="http://localhost:11434/v1",
-            api_key="ollama", # Dummy key required by OpenAI client
+        llm=google.LLM(
+            model="gemini-1.5-flash",
         ),
         tts=tts_adapter,
         chat_ctx=initial_ctx,

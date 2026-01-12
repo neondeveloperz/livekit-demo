@@ -264,6 +264,7 @@ class CosyVoiceTTS(tts.TTS):
         super().__init__(capabilities=tts.TTSCapabilities(streaming=True), sample_rate=22050, num_channels=1)
         self._model = None
         self._device = device
+        self.voice = "default" # Default to 'default' (zero-shot/cross-lingual) for Thai support
         
         full_model_path = os.path.join(PROJECT_ROOT, model_path)
         logger.info(f"Checking CosyVoice model at: {full_model_path}")
